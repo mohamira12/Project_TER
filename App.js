@@ -1,6 +1,6 @@
 import React from 'react';
 import { SafeAreaView, StyleSheet, ToastAndroid } from 'react-native';
-import SignIn from './src/screens/SignIn';
+import NewPasswordScreen from './src/screens/NewPasswordScreen';
 export default function App() {
   const showToast = () =>{
     console.log("Toast cleacked")
@@ -13,8 +13,7 @@ export default function App() {
   return (
     <SafeAreaView style={styles.container}>
     
-      
-      <SignIn />
+      <NewPasswordScreen></NewPasswordScreen>
     
 
     </SafeAreaView>
