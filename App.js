@@ -1,20 +1,12 @@
 import React from 'react';
-import { SafeAreaView, StyleSheet, ToastAndroid } from 'react-native';
-import NewPasswordScreen from './src/screens/NewPasswordScreen';
+import { SafeAreaView, StyleSheet } from 'react-native';
+import Navigation from './src/navigation';
 export default function App() {
-  const showToast = () =>{
-    console.log("Toast cleacked")
-    ToastAndroid.show(
-      "you cleaked this Toast",
-      ToastAndroid.SHORT,
-      ToastAndroid.BOTTOM
-    )
-    }
+
   return (
     <SafeAreaView style={styles.container}>
     
-      <NewPasswordScreen></NewPasswordScreen>
-    
+     <Navigation></Navigation>
 
     </SafeAreaView>
   );

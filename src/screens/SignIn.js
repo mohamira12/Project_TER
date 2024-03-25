@@ -1,4 +1,5 @@
 
+import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { Image, ScrollView, StyleSheet, View, useWindowDimensions } from 'react-native';
 import Logo from '../../assets/images/logo.png';
@@ -10,9 +11,11 @@ export default function SignIn() {
   const  [Password,setPassword]=useState('');
   const onSignInPressed=() => {
     console.warn("Sign in");
+    navigation.navigate('HomeScreen');
   };
   const onForgotPasswordPressed=() => {
     console.warn("Forgot password");
+    navigation.navigate('ForgotPassword');
   };
   const onSignInFacebookPressed=() => {
     console.warn("Sign in with facebook");
@@ -22,7 +25,9 @@ export default function SignIn() {
   };
   const onSignUpPressed=() => {
     console.warn("Sign up");
+    navigation.navigate('SignUp');
   };
+  const  navigation=useNavigation();
   return (
     <ScrollView style={styles.root}>
     <View style={styles.root} >

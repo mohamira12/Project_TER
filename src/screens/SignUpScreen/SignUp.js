@@ -1,4 +1,5 @@
 
+import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { ScrollView, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import CostomButton from '../../components/CostomButton/CostomButton';
@@ -10,10 +11,12 @@ export default function SignUp() {
   const  [PasswordConf,setPasswordConf]=useState('');
   const  [Password,setPassword]=useState('');
   const onSignupPressed=() => {
-    console.warn("Sign up");
+    console.warn("Sign up");  
+    navigation.navigate('SignIn');
   };
   const onForgotPasswordPressed=() => {
     console.warn("Forgot password");
+    navigation.navigate('ForgotPassword');
   };
   const onSignInFacebookPressed=() => {
     console.warn("Sign in with facebook");
@@ -23,7 +26,9 @@ export default function SignUp() {
   };
   const onSignUpPressed=() => {
     console.warn("Sign up");
+    navigation.navigate('SignIn');
   };
+  const  navigation=useNavigation();
   return (
     <ScrollView style={styles.root}>
     <View style={styles.root} >

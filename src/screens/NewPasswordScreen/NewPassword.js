@@ -1,4 +1,5 @@
 
+import { useNavigation } from '@react-navigation/native';
 import React, { useState } from 'react';
 import { ScrollView, StyleSheet, Text, View, useWindowDimensions } from 'react-native';
 import CostomButton from '../../components/CostomButton/CostomButton';
@@ -9,10 +10,12 @@ export default function NewPassword() {
   const [newpassword,setnewpassword]=useState('');
   const onBackSignInPressed=() => {
     console.warn("Back to Sign In");
+    navigation.navigate('SignIn');
   };
   const onSubmitPressed=() => {
-    console.warn("Submit");
+   navigation.navigate('HomeScreen');
   };
+  const  navigation=useNavigation();
   return (
     <ScrollView style={styles.root}>
     <View style={styles.root} >
