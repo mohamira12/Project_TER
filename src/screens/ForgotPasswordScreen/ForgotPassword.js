@@ -22,6 +22,7 @@ export default function ForgotPassword() {
      <Text >Username*</Text>
       <Costominput 
       placeholder={"Username"}
+      Design={"user"}
       value={Username}
       setValue={setUsername}
      
