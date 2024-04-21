@@ -5,11 +5,14 @@ import { doc, getDoc } from 'firebase/firestore';
 import React, { useState } from 'react';
 import { Controller, useForm } from 'react-hook-form';
 import { Image, ScrollView, StyleSheet, View, useWindowDimensions } from 'react-native';
+import { useDispatch } from 'react-redux';
 import Logo from '../../assets/images/logo.png';
 import CostomButton from '../components/CostomButton/CostomButton';
 import Costominput from '../components/Custominput';
 import { firebaseAuth, firestoreDB } from '../config/firebase.config';
 export default function SignIn() {
+  
+  const dispatch=useDispatch();
   const [email, setEmail] = useState('');
   const [Password, setPassword] = useState('');
   const [Username ,setUsername]=useState("");
@@ -26,13 +29,15 @@ export default function SignIn() {
             getDoc(doc(firestoreDB, "users", UserCredential.user.uid)).then((docSnap) => {
               if (docSnap.exists()) {
                 console.log("User data:", docSnap.data());
-
+                dispatch(SET_USER( docSnap.data()));
               }
             });
-           // navigation.navigate('HomeScreen');
+            navigation.navigate('SplashScreen');
+           
           }
         }).catch((error) => {
           console.log("Error:",error.message);
+          alert("Adresse email invalide ou  Mot de passe incorrect.");
         }
         );
       }
