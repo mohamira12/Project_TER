@@ -4,9 +4,11 @@ import React from 'react';
 import { Provider } from 'react-redux';
 import Store from '../context/store';
 import AddToChatScreen from '../screens/AddToChatScreen';
+import ChatScreen from '../screens/ChatScreen';
 import ForgotPassword from '../screens/ForgotPasswordScreen';
 import HomeScreen from '../screens/HomeScreen';
 import NewPassword from '../screens/NewPasswordScreen';
+import ProfileScreen from '../screens/ProfileScreen';
 import SignIn from '../screens/SignIn';
 import SignUp from '../screens/SignUpScreen';
 import SplashScreen from '../screens/SplashScreen';
@@ -23,7 +25,8 @@ export default function Navigation() {
       <stack.Screen name="HomeScreen" component={HomeScreen}></stack.Screen>
       <stack.Screen name="SplashScreen" component={SplashScreen}></stack.Screen>
       <stack.Screen name="AddToChatScreen" component={AddToChatScreen}></stack.Screen>
-     
+      <stack.Screen name="ChatScreen" component={ChatScreen}></stack.Screen>
+      <stack.Screen name="ProfileScreen" component={ProfileScreen}></stack.Screen>
        </stack.Navigator>
        </Provider>
     </NavigationContainer>

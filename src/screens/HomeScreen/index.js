@@ -2,36 +2,57 @@ import { default as React } from 'react';
 import { ActivityIndicator, Image, ScrollView, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
-import { useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import { useSelector } from 'react-redux';
 
 import { FontAwesome5 } from '@expo/vector-icons';
 import { useNavigation } from '@react-navigation/native';
+import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import Logo from '../../../assets/images/logo.png';
-
+import { firestoreDB } from "../../config/firebase.config";
 
 export default function Index() {
   const navigation = useNavigation();
   const user = useSelector(state => state.user.user);
-  console.log("logged user", user?._id);
-  const [isLoading,setLoading]=useState(false);
+  
+  const [isLoading,setLoading]=useState(true);
+  const [chats, setChats] = useState(null);
+  
+  useLayoutEffect(() => {
+    const chatQuery = query(
+      collection(firestoreDB, "chats"),
+      orderBy("_id", "desc")
+    );
+
+    const unsubscribe = onSnapshot(chatQuery, (querySnapShot) => {
+      const chatRooms = querySnapShot.docs.map((doc) => doc.data());
+      setChats(chatRooms);
+      setLoading(false);
+    });
+
+    // Resturn the unsubscribe function to stop listening to the updates
+    return unsubscribe;
+  }, []);
   return (
-    <View style={{flex:1}}>
+    <View >
       <SafeAreaView>
-        <View style={styles.container}>
-          <Image source={Logo} style={styles.logo} resizeMode='contain' />
-          <TouchableOpacity>
-            <Image source={{ uri : user?.profilePicture}} style={styles.logo} resizeMode='contain' />
+        <View style={{flexDirection: 'row',justifyContent: 'space-between'}}>
+        
+          <TouchableOpacity onPress={() => { console.log('Profile picture clicked'); navigation.navigate("ProfileScreen")}}>
+            <Image  source={{ uri : user?.profilePicture}} style={styles.logo} resizeMode='contain' />
           </TouchableOpacity>
+          <Image source={Logo} style={styles.logo}  resizeMode='contain' />
+          
         </View>
         {/*scrolling area */}
+        <View>
         <ScrollView  style={styles.scrollView}>
             {/* msg title*/}
             <View style={styles.msgTitleContainer}>
-              <Text style={{fontSize: 20, fontWeight: 'bold',marginTop:110}}>Messages</Text>
+              <Text style={{fontSize: 20, fontWeight: 'bold',marginTop:10}}>Messages</Text>
               <TouchableOpacity  onPress={() => navigation.navigate("AddToChatScreen")}>
-                <Ionicons name='chatbox' size={28} color="#555" style={{marginTop: 110}}></Ionicons>
+                <Ionicons name='chatbox' size={28} color="#555" style={{marginTop: 10}}></Ionicons>
               </TouchableOpacity>
             </View>
             {isLoading ? (
@@ -43,33 +64,27 @@ export default function Index() {
               </>
             ) : (
               <>
-              <MessageCard></MessageCard>
-              <MessageCard></MessageCard>
-              <MessageCard></MessageCard>
-              <MessageCard></MessageCard>
-              <MessageCard></MessageCard>
-              <MessageCard></MessageCard>
-              <MessageCard></MessageCard>
-              <MessageCard></MessageCard>
-              <MessageCard></MessageCard>
-              <MessageCard></MessageCard>
-              <MessageCard></MessageCard>
-              <MessageCard></MessageCard><MessageCard></MessageCard>
-              <MessageCard></MessageCard>
-              <MessageCard></MessageCard>
-              <MessageCard></MessageCard>
-              <MessageCard></MessageCard>
-              <MessageCard></MessageCard>
-              </>
-            ) }
+                {chats && chats?.length > 0 ? (
+                  <>
+                    {chats?.map((room) => (
+                      <MessageCard key={room._id} room={room} />
+                    ))}
+                  </>
+                ) : (
+                  <></>
+                )}
+              </>        ) }
         </ScrollView>
+        </View>
       </SafeAreaView>
     </View>
   );
 }
-const MessageCard=()=>{
+const MessageCard=({ room })=>{
+  const navigation = useNavigation();
+
   return (
-    <TouchableOpacity style={styles.MessLis}>
+    <TouchableOpacity  onPress={() => navigation.navigate("ChatScreen", { room: room })} style={styles.MessLis}>
        {/*imgs */}
        <View  style={styles.iconContainer}>
         <FontAwesome5 name="users" size={24} color="#555" ></FontAwesome5>
@@ -77,8 +92,8 @@ const MessageCard=()=>{
        {/*content */}
        
           <View style={styles.msgContentContainer}>
-          <Text style={styles.msgTitle}>Message title</Text>
-          <Text style={styles.msgContent }>Hello, I'm Lenovo</Text>
+          <Text style={styles.msgTitle}>{room.chatName}</Text>
+          <Text style={styles.msgContent }>{room.chatName}</Text>
         </View>
           
        {/*time */}
